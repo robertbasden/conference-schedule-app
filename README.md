@@ -1,5 +1,7 @@
 # Conference Schedule App
 
+[Demo](https://robertbasden.github.io/conference-schedule-app/)
+
 ## Build Instructions
 
 Run the following command from the root of this project:
