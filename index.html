@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Conference Schedule</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="manifest" href="manifest.json">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <link rel="stylesheet" href="styles/main.css">
+        <style>
+            body {
+                margin-top: 55px;
+            }
+            .nav.nav-pills {
+                margin: 10px;
+            }
+            .presenter-thumbnail {
+                border-radius: 50%;
+                width: 50px;
+                height: 50px;
+            }
+
+            .onlyShowFavouritesFilter {
+                float: right;
+                font-size: 25px;
+                margin: 5px 15px 0px 0px;
+            }
+            .onlyShowFavouritesStar {
+                color: #CCCCCC;
+                cursor: pointer;
+            }
+
+            .onlyShowFavouritesOn .onlyShowFavouritesStar {
+                color: #337ab7;
+            }
+
+            .favourite-event {
+                float: right;
+                font-size: 25px;
+                margin: 0px 0px 20px 20px;
+                cursor: pointer;
+                color: #CCCCCC;
+            }
+            .favourite-event--selected {
+                color: #337ab7;
+            }
+            .label {
+                margin-right: 5px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app"></div>
+        <script type="text/javascript">
+
+            if (!('serviceWorker' in navigator)) {
+                console.log('Service Worker not supported');
+            } else {
+                navigator.serviceWorker.register('service-worker.js').then(function(registration) {
+                    console.log('SW registered! Scope is:', registration.scope);
+                });
+            }
+
+        </script>
+        <script src="scripts/main.js"></script>
+		<script type="text/javascript">
+
+            var favouritesKey = "conf-tracker-favourites";
+            function fetchFavourites() {
+                var currentFavourites = localStorage.getItem(favouritesKey);
+                if(currentFavourites == null || currentFavourites == undefined) {
+                    currentFavourites = [];
+                } else {
+                    currentFavourites = JSON.parse(currentFavourites);
+                }
+                return currentFavourites;
+            }
+
+            var app = Elm.Main.embed(document.getElementById("app"), fetchFavourites());
+            app.ports.saveFavourites.subscribe(function(favourites) {
+                localStorage.setItem(favouritesKey, JSON.stringify(favourites));
+            });
+            app.ports.clearFavourites.subscribe(function() {
+                localStorage.removeItem(favouritesKey);
+            });
+        </script>
+    </body>
+</html>
