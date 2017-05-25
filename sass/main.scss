@@ -1,0 +1,9 @@
+@import "_includes/_normalize.scss";
+
+@import "_includes/loader.scss";
+
+.page--error {
+    color: #CD0A0A;
+    h1,
+    p { text-align: center; }
+}
